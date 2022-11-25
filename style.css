@@ -1,0 +1,174 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+:root{
+    --cellSize: 100px;
+    --markSize: calc(var(--cellSize) * 0.8);
+    --mainColor: rgb(73, 236, 209);
+    --bgColor: #333;
+    --markColorX: #000;
+    --markColorCircle: #fff;
+    --markHover: #444;
+}
+
+body{
+    background: var(--bgColor);
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem 0;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+.container .title h1{
+    font-size: 2rem;
+    color: #fff;
+    letter-spacing: 2px;
+}
+.container .title h1 span{
+    color: var(--mainColor);
+}
+.container .title .me{
+    color: #fff;
+    float: right;
+    margin-top: 0.5rem;
+}
+.gameBoard{
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: repeat(3, auto);
+    box-shadow: 0 35px 50px rgba(0, 0, 0, 0.3);
+}
+.cell{
+    position: relative;
+    width: var(--cellSize);
+    height: var(--cellSize);
+    background-color: var(--mainColor);
+    border: 1px solid #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+/*********
+MARKING X||O
+**********/
+
+.cell.x::before,
+.cell.x::after{
+    background: var(--markColorX);
+}
+.gameBoard.x .cell:not(.x):not(.circle):hover::before,
+.gameBoard.x .cell:not(.x):not(.circle):hover::after,
+.gameBoard.circle .cell:not(.x):not(.circle):hover::before,
+.gameBoard.circle .cell:not(.x):not(.circle):hover::after{
+    background: var(--markHover);
+}
+.cell.x::before,
+.cell.x::after,
+.gameBoard.x .cell:not(.x):not(.circle):hover::before,
+.gameBoard.x .cell:not(.x):not(.circle):hover::after{
+    content: '';
+    position: absolute;
+    width: calc(var(--markSize) * 0.15);
+    height: var(--markSize);
+    transition: 0.5s linear;
+}
+.cell.x::before,
+.gameBoard.x .cell:not(.x):not(.circle):hover::before{
+    transform: rotate(45deg);
+}
+.cell.x::after,
+.gameBoard.x .cell:not(.x):not(.circle):hover::after{
+    transform: rotate(-45deg);
+}
+.cell.circle::before,
+.cell.circle::after{
+    background: var(--markColorCircle);
+}
+.gameBoard.circle .cell:not(.x):not(.circle):hover::before,
+.gameBoard.circle .cell:not(.x):not(.circle):hover::after,
+.cell.circle::before,
+.cell.circle::after{
+    content: '';
+    position: absolute;
+    width: var(--markSize);
+    height: var(--markSize);
+    border-radius: 50%;
+}
+.gameBoard.circle .cell:not(.x):not(.circle):hover::after,
+.cell.circle::after{
+    width: calc(var(--markSize) * 0.7);
+    height: calc(var(--markSize) * 0.7);
+    background: var(--mainColor);
+}
+
+/**********
+win Message
+***********/
+.winMsgBox{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    flex-direction: column;
+    gap: 1rem 0;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100vh;
+    background: rgba(0,0,0,0.3);
+    font-size: 3rem;
+    color: #ffffff;
+    text-shadow: 0 5px 10px rgba(0,0,0,0.5);
+}
+.winMsgBox button{
+    padding: 0.5rem 2rem;
+    font-size: 1.25rem;
+    background: VAR(--mainColor);
+    color: #fff;
+    border: 1px solid transparent;
+    letter-spacing: 1px;
+    transition: 0.5s ease-in-out;
+}
+.winMsgBox button:hover{
+    background: #000;
+    color: var(--mainColor);
+    border-color: var(--mainColor);
+}
+.winMsgBox.show{
+    display: flex;
+}
+
+.cell.x,
+.cell.circle{
+    cursor: not-allowed;
+}
+
+
+
+@media screen and (max-width: 500px) {
+    .gameBoard{
+        padding: auto 1rem;
+    }
+}
+@media screen and (max-width: 350px) {
+    .container .title h1{
+        font-size: 1.85rem;
+    }
+    .winMsgBox{
+        padding: 0 1rem;
+        font-size: 2.2rem;
+    }
+}
